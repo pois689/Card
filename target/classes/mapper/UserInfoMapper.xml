@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userInfoDao">
+	<resultMap type="info" id="info">
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="USER_REGISTER_DATE" property="userRegisterDate"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="USER_SOCIAL_SECUNUM" property="userSocialSecunum"/>
+		<result column="USER_SEX" property="userSex"/>
+		<result column="USER_COMP" property="userComp"/>
+		<result column="USER_COMP_ENTERDATE" property="userCompEnterdate"/>
+		<result column="USER_DEPT" property="userDept"/>
+		<result column="USER_SPOT" property="userSpot"/>
+		<result column="USER_ARMY_SERV" property="userArmyServ"/>
+		<result column="USER_MARITAL_STATUS" property="userMaritalStatus"/>
+		<result column="USER_ARMY_SERV_ENTER" property="userArmyServEnter"/>
+		<result column="USER_ARMY_SERV_LEAVE" property="userArmyServLeave"/>
+		<result column="USER_ARMY_SERV_PERIOD" property="userArmyServPeriod"/>
+		<result column="USER_TELNUM_WIRED" property="userTelnumWired"/>
+		<result column="USER_TELNUM_WIRELESS" property="userTelnumWireless"/>
+		<result column="USER_EMAIL" property="userEmail"/>
+		<result column="USER_ZIPCODE" property="userZipcode"/>
+		<result column="USER_ADDRESS" property="userAddress"/>
+		<collection property="userInfoCareer" resultMap="career"/>
+		<collection property="userInfoEdu" resultMap="edu"/>
+		<collection property="userInfoLicen" resultMap="licen" />
+		<collection property="userInfoQualifi" resultMap="qualifi"/>
+		<collection property="userInfoSkill" resultMap="skill"/>
+		<collection property="userInfoTraining" resultMap="training"/>
+	</resultMap>
+	
+	<resultMap type="career" id="career">
+		<result column="CAREER_IDX" property="careerIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="CAREER_COMP_NAME" property="careerCompName"/>
+		<result column="CAREER_ENTERDATE" property="careerEnterdate"/>
+		<result column="CAREER_LEAVEDATE" property="careerLeavedate"/>
+		<result column="CAREER_SPOT" property="careerSpot"/>
+		<result column="CAREER_RESPONSIB" property="careerResponsib"/>
+	</resultMap>
+	
+	<resultMap type="edu" id="edu">
+		<result column="EDU_IDX" property="eduIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="EDU_SCHOOL_NAME" property="eduSchoolName"/>
+		<result column="EDU_STATUS" property="eduStatus"/>
+		<result column="EDU_YEAR" property="eduYear"/>
+		<result column="EDU_MONTH" property="eduMonth"/>
+	</resultMap>
+	
+	<resultMap type="licen" id="licen">
+		<result column="LICEN_IDX" property="licenIdx"/>
+		<result column="USER_IDX" property="UserIdx"/>
+		<result column="LICEN_NAME" property="licenName"/>
+		<result column="LICEN_SKILL_LEVEL" property="licenSkillLevel"/>
+	</resultMap>
+	
+	<resultMap type="qualifi" id="qualifi">
+		<result column="QUALIFI_IDX" property="qualifiIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="QUALIFI_NAME" property="qualifiName"/>
+		<result column="QUALIFI_GETDATE" property="qualifiGetdate"/>
+	</resultMap>
+	
+	<resultMap type="skill" id="skill">
+		<result column="SKILL_IDX" property="skillIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="SKILL_PROJECT_NAME" property="skillProjectName"/>
+		<result column="SKILL_STARTDATE" property="skillStartdate"/>
+		<result column="SKILL_ENDDATE" property="skillEnddate"/>
+		<result column="SKILL_CUSTOMER_COMP" property="skillCustomerComp"/>
+		<result column="SKILL_WORK_COMP" property="skillWorkComp"/>
+		<result column="SKILL_APPLIED" property="skillApplied"/>
+		<result column="SKILL_INDUSTRY" property="skillIndustry"/>
+		<result column="SKILL_ROLE" property="skillRole"/>
+		<result column="SKILL_MODEL" property="skillModel"/>
+		<result column="SKILL_OS" property="skillOs"/>
+		<result column="SKILL_LANG" property="skillLang"/>
+		<result column="SKILL_DBMS" property="skillDbms"/>
+		<result column="SKILL_COMM" property="skillComm"/>
+		<result column="SKILL_TOOL" property="skillTool"/>
+		<result column="SKILL_ETC" property="skillEtc"/>
+	</resultMap>
+	
+	<resultMap type="training" id="training">
+		<result column="TRAINING_IDX" 			property="trainingIdx"/>
+		<result column="USER_IDX" 				property="userIdx"/>
+		<result column="TRAINING_NAME" 			property="trainingName"/>
+		<result column="TRAINING_STARTDATE" 	property="trainingStartdate"/>
+		<result column="TRAINING_ENDDATE" 		property="trainingEnddate"/>
+		<result column="TRAINING_AGENCY"		property="trainingAgency"/>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="userIdx">
+		<selectKey keyProperty="userIdx" resultType="Integer" order="BEFORE">
+			select user_info_seq.nextval as userIdx from dual
+		</selectKey>
+		insert into 
+		user_info
+		(
+			USER_IDX
+			,USER_REGISTER_DATE
+			,USER_NAME
+			,USER_SOCIAL_SECUNUM 
+			,USER_SEX
+			,USER_COMP
+			,USER_COMP_ENTERDATE 
+			,USER_DEPT
+			,USER_SPOT
+			,USER_ARMY_SERV
+			,USER_MARITAL_STATUS
+			,USER_ARMY_SERV_ENTER
+			,USER_ARMY_SERV_LEAVE
+			,USER_ARMY_SERV_PERIOD
+			,USER_TELNUM_WIRED
+			,USER_TELNUM_WIRELESS
+			,USER_EMAIL
+			,USER_ZIPCODE
+			,USER_ADDRESS
+		) 
+		values
+		(
+			#{userIdx}
+			,sysdate
+			,#{userName}
+			,#{userSocialSecunum}
+			,#{userSex}
+			,#{userComp}
+			,sysdate
+			,#{userDept}
+			,#{userSpot}
+			,#{userArmyServ}
+			,#{userMaritalStatus}
+			,sysdate
+			,sysdate
+			,#{userArmyServPeriod}
+			,#{userTelnumWired}
+			,#{userTelnumWireless}
+			,#{userEmail}
+			,#{userZipcode}
+			,#{userAddress}
+		)
+	</insert>
+	
+	<select id="userInfo" resultMap="info" parameterType="Integer">
+		SELECT 
+			 u.USER_NAME
+			,u.USER_SOCIAL_SECUNUM 
+			,u.USER_SEX
+			,u.USER_COMP
+			,u.USER_COMP_ENTERDATE
+			,u.USER_DEPT 
+			,u.USER_SPOT 
+			,u.USER_ARMY_SERV 
+			,u.USER_MARITAL_STATUS 
+			,u.USER_ARMY_SERV_ENTER
+			,u.USER_ARMY_SERV_LEAVE
+			,u.USER_ARMY_SERV_PERIOD 
+			,u.USER_TELNUM_WIRED
+			,u.USER_TELNUM_WIRELESS
+			,u.USER_EMAIL 
+			,u.USER_ZIPCODE 
+			,u.USER_ADDRESS 
+			,c.CAREER_COMP_NAME
+			,c.CAREER_ENTERDATE 
+			,c.CAREER_LEAVEDATE 
+			,c.CAREER_SPOT 
+			,c.CAREER_RESPONSIB 
+			,e.EDU_SCHOOL_NAME 
+			,e.EDU_STATUS 
+			,e.EDU_YEAR 
+			,e.EDU_MONTH 
+			,l.LICEN_NAME 
+			,l.LICEN_SKILL_LEVEL
+			,q.QUALIFI_NAME 
+			,q.QUALIFI_GETDATE 
+			,s.SKILL_PROJECT_NAME
+			,s.SKILL_STARTDATE      
+			,s.SKILL_ENDDATE        
+			,s.SKILL_CUSTOMER_COMP  
+			,s.SKILL_WORK_COMP     
+			,s.SKILL_APPLIED       
+			,s.SKILL_INDUSTRY      
+			,s.SKILL_ROLE           
+			,s.SKILL_MODEL         
+			,s.SKILL_OS          
+			,s.SKILL_LANG          
+			,s.SKILL_DBMS           
+			,s.SKILL_COMM           
+			,s.SKILL_TOOL          
+			,s.SKILL_ETC 
+			,t.TRAINING_NAME 
+			,t.TRAINING_STARTDATE 
+			,t.TRAINING_ENDDATE 
+			,t.TRAINING_AGENCY
+		FROM 
+			user_info u
+    		,user_info_career c
+    		,user_info_edu e
+  		    ,user_info_licen l
+  			,user_info_qualifi q
+   		    ,user_info_skill s
+   			,user_info_training t
+		WHERE 
+			c.user_idx=e.user_idx
+			and e.user_idx=l.user_idx
+			and l.user_idx=q.user_idx
+			and q.user_idx=s.user_idx
+			and s.user_idx=t.user_idx
+			and t.user_idx=u.user_idx
+			and u.user_idx=#{userIdx}
+	</select>
+	
+	<select id="userInfoList" resultType="info" parameterType="hashmap">
+	SELECT 
+		USER_IDX as userIdx          
+		,USER_REGISTER_DATE as userRegisterDate
+		,USER_NAME as userName         
+		,USER_COMP as userComp        
+		,USER_DEPT as userDept
+	FROM
+    (SELECT 
+            B.USER_IDX
+                ,B.USER_REGISTER_DATE
+                ,B.USER_NAME
+                ,B.USER_COMP 
+                ,B.USER_DEPT
+                ,ROWNUM AS RNUM
+        FROM		
+            (SELECT
+                USER_IDX
+                ,USER_REGISTER_DATE
+                ,USER_NAME
+                ,USER_COMP 
+                ,USER_DEPT
+            FROM 
+                USER_INFO
+           <if test="userListSearchPeriod == 'userName'.toString()">
+            WHERE
+        	USER_NAME LIKE '%${userListSearchWord}%'
+           </if>
+           <if test="userListSearchPeriod == 'userComp'.toString()">
+            WHERE
+        	USER_COMP LIKE '%${userListSearchWord}%'
+           </if>
+           <if test="userListSearchPeriod == 'userDept'.toString()">
+            WHERE
+        	USER_DEPT LIKE '%${userListSearchWord}%'
+           </if>
+                ORDER BY ROWNUM DESC
+        	    )B
+        WHERE
+        <![CDATA[
+            rownum<=#{pageNo}*#{userInfoDataSize}
+        ]]>
+        <![CDATA[	    
+            )
+        WHERE
+    RNUM>=(#{pageNo}-1)*#{userInfoDataSize} + 1
+    ]]>	
+	</select>
+	
+	<select id="UserCount" resultType="int">
+		SELECT
+			COUNT(USER_IDX)
+		FROM 
+			USER_INFO
+	</select>
+	
+	<update id="userInfoUpdate">
+		UPDATE
+		USER_INFO SET				
+			USER_REGISTER_DATE     = sysdate               
+			,USER_NAME              = #{userName}           
+			,USER_SOCIAL_SECUNUM    = #{userSocialSecunum}  
+			,USER_SEX               = #{userSex}            
+			,USER_COMP              = #{userComp}           
+			,USER_COMP_ENTERDATE    = sysdate               
+			,USER_DEPT              = #{userDept}           
+			,USER_SPOT              = #{userSpot}           
+			,USER_ARMY_SERV         = #{userArmyServ}       
+			,USER_MARITAL_STATUS    = #{userMaritalStatus}  
+			,USER_ARMY_SERV_ENTER   = sysdate               
+			,USER_ARMY_SERV_LEAVE   = sysdate               
+			,USER_ARMY_SERV_PERIOD  = #{userArmyServPeriod} 
+			,USER_TELNUM_WIRED      = #{userTelnumWired}    
+			,USER_TELNUM_WIRELESS   = #{userTelnumWireless} 
+			,USER_EMAIL             = #{userEmail}          
+			,USER_ZIPCODE           = #{userZipcode}        
+			,USER_ADDRESS           = #{userAddress}
+		WHERE
+			USER_IDX=#{userIdx}	       
+	</update>
+</mapper>

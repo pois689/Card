@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qualifiDao">
+	
+	<resultMap type="qualifi" id="qualifi">
+		<result column="QUALIFI_IDX" property="qualifiIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="QUALIFI_NAME" property="qualifiName"/>
+		<result column="QUALIFI_GETDATE" property="qualifiGetdate"/>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="qualifiIdx" parameterType="hashmap">
+		<selectKey keyProperty="qualifiIdx" resultType="Integer" order="BEFORE">
+			select user_info_qualifi_seq.nextval from dual
+		</selectKey>
+		insert into 
+			user_info_${tbName}
+		(
+			QUALIFI_IDX
+			,USER_IDX
+			,QUALIFI_NAME
+			,QUALIFI_GETDATE
+		)	 
+		values
+		(
+			#{qualifiIdx}
+			,#{userIdx}
+			,#{qualifiName}
+			,#{qualifiGetdate}
+		)	
+	</insert>
+	
+	<select id="list" resultType="qualifi">
+		SELECT
+			QUALIFI_NAME AS qualifiName
+			,to_char(QUALIFI_GETDATE, 'yyyy-mm-dd') as qualifiGetdate
+		FROM
+			user_info_qualifi
+		WHERE
+			user_idx=#{userIdx}
+	</select>
+	
+	<update id="updateUserQulifi">
+		UPDATE
+		USER_INFO_QUALIFI
+		SET
+			QUALIFI_NAME    = #{qualifiName}   
+			,QUALIFI_GETDATE = #{qualifiGetdate}
+		WHERE 
+			USER_IDX=#{intUserIdx}
+	</update>
+</mapper>

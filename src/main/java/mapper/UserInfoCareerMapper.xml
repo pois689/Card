@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="careerDao">
+	
+	<resultMap type="career" id="career">
+		<result column="CAREER_IDX" property="careerIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="CAREER_COMP_NAME" property="careerCompName"/>
+		<result column="CAREER_ENTERDATE" property="careerEnterdate"/>
+		<result column="CAREER_LEAVEDATE" property="careerLeavedate"/>
+		<result column="CAREER_SPOT" property="careerSpot"/>
+		<result column="CAREER_RESPONSIB" property="careerResponsib"/>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="careerIdx" parameterType="hashmap">
+		<selectKey keyProperty="careerIdx" resultType="Integer" order="BEFORE">
+			select user_info_career_seq.nextval from dual
+		</selectKey>
+		insert into 
+		user_info_${tbName} 
+		values
+		(
+		#{careerIdx}
+		,#{userIdx}
+		,#{careerCompName}
+		,#{careerEnterdate}
+		,#{careerLeavedate}
+		,#{careerSpot}
+		,#{careerResponsib}
+		)
+	</insert>
+	
+	<select id="list" resultType="career">
+		SELECT
+			CAREER_COMP_NAME as careerCompName
+			,to_char(CAREER_ENTERDATE,'yyyy-mm-dd') as careerEnterdate
+			,to_char(CAREER_LEAVEDATE,'yyyy-mm-dd') as careerLeavedate
+			,CAREER_SPOT as careerSpot
+			,CAREER_RESPONSIB as careerResponsib
+		FROM
+			user_info_career
+		WHERE
+			user_idx=#{intUserIdx}
+	</select>
+	
+	<update id="updateUserCareer">
+		UPDATE
+		USER_INFO_CAREER
+		SET
+			CAREER_COMP_NAME	= #{careerCompName} 
+			,CAREER_ENTERDATE   = #{careerEnterdate}
+			,CAREER_LEAVEDATE   = #{careerLeavedate}
+			,CAREER_SPOT        = #{careerSpot}     
+			,CAREER_RESPONSIB   = #{careerResponsib}
+		WHERE 
+			USER_IDX=#{userIdx}
+	</update>
+	
+</mapper>

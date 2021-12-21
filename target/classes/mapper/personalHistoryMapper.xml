@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="personalHistory">
+	<resultMap type="info" id="info">
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="USER_REGISTER_DATE" property="userRegisterDate"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="USER_SOCIAL_SECUNUM" property="userSocialSecunum"/>
+		<result column="USER_SEX" property="userSex"/>
+		<result column="USER_COMP" property="userComp"/>
+		<result column="USER_COMP_ENTERDATE" property="userCompEnterdate"/>
+		<result column="USER_DEPT" property="userDept"/>
+		<result column="USER_SPOT" property="userSpot"/>
+		<result column="USER_ARMY_SERV" property="userArmyServ"/>
+		<result column="USER_MARITAL_STATUS" property="userMaritalStatus"/>
+		<result column="USER_ARMY_SERV_ENTER" property="userArmyServEnter"/>
+		<result column="USER_ARMY_SERV_LEAVE" property="userArmyServLeave"/>
+		<result column="USER_ARMY_SERV_PERIOD" property="userArmyServPeriod"/>
+		<result column="USER_TELNUM_WIRED" property="userTelnumWired"/>
+		<result column="USER_TELNUM_WIRELESS" property="userTelnumWireless"/>
+		<result column="USER_EMAIL" property="userEmail"/>
+		<result column="USER_ZIPCODE" property="userZipcode"/>
+		<result column="USER_ADDRESS" property="userAddress"/>
+		<collection property="userInfoCareer" resultMap="career"/>
+		<collection property="userInfoEdu" resultMap="edu"/>
+		<collection property="userInfoLicen" resultMap="licen" />
+		<collection property="userInfoQualifi" resultMap="qualifi"/>
+		<collection property="userInfoSkill" resultMap="skill"/>
+		<collection property="userInfoTraining" resultMap="training"/>
+		<collection property="userInfoHobby" resultMap="hobby"/>
+	</resultMap>
+	
+	<resultMap type="career" id="career">
+		<result column="CAREER_IDX" property="careerIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="CAREER_COMP_NAME" property="careerCompName"/>
+		<result column="CAREER_ENTERDATE" property="careerEnterdate"/>
+		<result column="CAREER_LEAVEDATE" property="careerLeavedate"/>
+		<result column="CAREER_SPOT" property="careerSpot"/>
+		<result column="CAREER_RESPONSIB" property="careerResponsib"/>
+	</resultMap>
+	
+	<resultMap type="edu" id="edu">
+		<result column="EDU_IDX" property="eduIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="EDU_SCHOOL_NAME" property="eduSchoolName"/>
+		<result column="EDU_STATUS" property="eduStatus"/>
+		<result column="EDU_YEAR" property="eduYear"/>
+		<result column="EDU_MONTH" property="eduMonth"/>
+	</resultMap>
+	
+	<resultMap type="licen" id="licen">
+		<result column="LICEN_IDX" property="licenIdx"/>
+		<result column="USER_IDX" property="UserIdx"/>
+		<result column="LICEN_NAME" property="licenName"/>
+		<result column="LICEN_SKILL_LEVEL" property="licenSkillLevel"/>
+	</resultMap>
+	
+	<resultMap type="qualifi" id="qualifi">
+		<result column="QUALIFI_IDX" property="qualifiIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="QUALIFI_NAME" property="qualifiName"/>
+		<result column="QUALIFI_GETDATE" property="qualifiGetdate"/>
+	</resultMap>
+	
+	<resultMap type="skill" id="skill">
+		<result column="SKILL_IDX" property="skillIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="SKILL_PROJECT_NAME" property="skillProjectName"/>
+		<result column="SKILL_STARTDATE" property="skillStartdate"/>
+		<result column="SKILL_ENDDATE" property="skillEnddate"/>
+		<result column="SKILL_CUSTOMER_COMP" property="skillCustomerComp"/>
+		<result column="SKILL_WORK_COMP" property="skillWorkComp"/>
+		<result column="SKILL_APPLIED" property="skillApplied"/>
+		<result column="SKILL_INDUSTRY" property="skillIndustry"/>
+		<result column="SKILL_ROLE" property="skillRole"/>
+		<result column="SKILL_MODEL" property="skillModel"/>
+		<result column="SKILL_OS" property="skillOs"/>
+		<result column="SKILL_LANG" property="skillLang"/>
+		<result column="SKILL_DBMS" property="skillDbms"/>
+		<result column="SKILL_COMM" property="skillComm"/>
+		<result column="SKILL_TOOL" property="skillTool"/>
+		<result column="SKILL_ETC" property="skillEtc"/>
+	</resultMap>
+	
+	<resultMap type="training" id="training">
+		<result column="TRAINING_IDX" 			property="trainingIdx"/>
+		<result column="USER_IDX" 				property="userIdx"/>
+		<result column="TRAINING_NAME" 			property="trainingName"/>
+		<result column="TRAINING_STARTDATE" 	property="trainingStartdate"/>
+		<result column="TRAINING_ENDDATE" 		property="trainingEnddate"/>
+		<result column="TRAINING_AGENCY"		property="trainingAgency"/>
+	</resultMap>
+	
+	<resultMap type="hobby" id="hobby">
+		<result column="HOBBY_IDX" property="hobbyIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="HOBBY_NAME" property="hobbyName"/>
+		<result column="HOBBY_CONTINUEDATE" property="hobbyContinuedate"/>
+		<result column="HOBBY_WEEKTIME" property="hobbyWeektime"/>
+	</resultMap>
+	
+	<sql id="userListWhere">
+		<where>
+			<if test="userListSearchPeriod != null and userListSearchPeriod != ''">
+				<choose>
+					<when test="userListSearchPeriod[0] == 'userName'">
+						  user_name LIKE '%${userListSearchWord[0]}%'
+					</when>
+					<when test="userListSearchPeriod[0] == 'userComp'">
+						 user_comp LIKE '%${userListSearchWord[0]}%'
+					</when>
+					<when test="userListSearchPeriod[0] == 'userDept'">
+						 user_dept LIKE '%${userListSearchWord[0]}%'
+					</when>
+				</choose>
+				
+			</if>
+			<if test="userCareerLength != null">
+					AND c.career_date>=#{userCareerLength[0]}
+			</if>
+			<if test="keywords != null">
+				AND 
+					<foreach collection="keywords" item="keywords" separator="OR">
+					(
+					s.skill_model like 		upper('%'||#{keywords}||'%')
+					 or s.skill_os like 	upper('%'||#{keywords}||'%')
+					 or s.skill_lang like 	upper('%'||#{keywords}||'%') 
+					 or s.skill_dbms like 	upper('%'||#{keywords}||'%')
+					 or s.skill_comm like 	upper('%'||#{keywords}||'%')
+					 or s.skill_tool like 	upper('%'||#{keywords}||'%')
+					 or s.skill_etc like 	upper('%'||#{keywords}||'%')
+					 )
+					</foreach>
+			</if>
+			<choose>
+				<when test="userGender == '남성'">
+					AND U.USER_SEX=#{userGender}
+				</when>
+				<when test="userGender == '여성'">
+					AND U.USER_SEX=#{userGender}
+				</when>
+			</choose>
+			
+			<!-- 결혼여부  검색 쿼리 추가 -->
+			<choose>
+				<when test="userMaritalStatus == '미혼'">
+					AND U.USER_MARITAL_STATUS=#{userMaritalStatus}
+				</when>
+				<when test="userMaritalStatus == '기혼'">
+					AND U.USER_MARITAL_STATUS=#{userMaritalStatus}
+				</when>
+			</choose>
+			
+			<if test="userAddress != null">
+				AND U.USER_ADDRESS like upper('%'||#{userAddress}||'%')
+			</if>
+		</where>
+	</sql>
+	
+	<select id="getinfo" resultType="hashmap">
+	 SELECT * FROM
+		(SELECT ROWNUM AS RNUM, A.* FROM
+			(SELECT DISTINCT u.user_idx
+				, u.user_name
+				, u.user_comp
+				, u.user_dept
+				, to_char(u.user_register_date, 'yyyy-mm-dd HH24:MI:SS') AS userRegisterDate
+				, u.user_sex 
+				, c.career_date
+			FROM 
+				user_info u
+			LEFT OUTER JOIN 
+				user_info_skill s
+			ON u.user_idx=s.user_idx
+			LEFT OUTER JOIN 
+				(select 
+					user_idx
+					,round(abs(sum((nvl(trunc(career_enterdate),sysdate) - nvl(trunc(career_leavedate),sysdate))/365))) as career_date
+				from user_info_career group by user_idx) c        
+	 		ON s.user_idx=c.user_idx	
+	 	
+			ORDER BY user_idx DESC
+			)A
+		)
+	</select>
+	
+	<!-- 불러오기시 리스트 조회 -->
+	<select id="userList" resultType="hashmap" parameterType="hashmap">
+	SELECT * FROM
+		(SELECT ROWNUM AS RNUM, A.* FROM
+			(SELECT DISTINCT u.user_idx
+				, u.user_name
+				, u.user_comp
+				, u.user_dept
+				, to_char(u.user_register_date, 'yyyy-mm-dd HH24:MI:SS') AS userRegisterDate
+				, u.user_sex 
+				, c.career_date
+				, u.user_marital_status
+				, u.user_address
+			FROM 
+				user_info u
+			LEFT OUTER JOIN 
+				user_info_skill s
+			ON u.user_idx=s.user_idx
+			LEFT OUTER JOIN 
+				(select 
+					user_idx
+					,round(abs(sum((nvl(trunc(career_enterdate),sysdate) - nvl(trunc(career_leavedate),sysdate))/365))) as career_date
+				from user_info_career group by user_idx) c        
+	 		ON s.user_idx=c.user_idx	
+	 		
+			<include refid="userListWhere"/>
+			
+			ORDER BY user_idx DESC
+			)A
+			<![CDATA[
+			WHERE ROWNUM <= #{laterLimit[0]}
+			)
+		WHERE RNUM >= #{prevLimit[0]}
+		]]>
+		
+	</select>
+	
+	<select id="userListCount" resultType="string">
+		SELECT 
+			COUNT(DISTINCT u.user_idx)
+		FROM 
+			user_info u
+		LEFT OUTER JOIN 
+			user_info_skill s
+		ON u.user_idx=s.user_idx
+			LEFT OUTER JOIN 
+				(select 
+					user_idx
+					,round(abs(sum((nvl(trunc(career_enterdate),sysdate) - nvl(trunc(career_leavedate),sysdate))/365))) as career_date
+				from user_info_career group by user_idx) c        
+	 		ON s.user_idx=c.user_idx
+	 		
+		<include refid="userListWhere"/>
+		
+	</select>
+	
+	
+	<!-- 개인이력카드등록 -->
+	<insert id="registerUser" parameterType="object" useGeneratedKeys="true" keyProperty="userIdx">
+		<selectKey keyProperty="userIdx" resultType="Integer" order="BEFORE">
+			select user_info_seq.nextval as userIdx from dual
+		</selectKey>
+		INSERT INTO user_info
+			(
+				user_idx
+				<!-- user name 필수입력사항 -->
+				,user_name
+				<if test="userSocialSecunum != null">, user_social_secunum</if>
+				<if test="userSex != null">, user_sex</if>
+				<if test="userComp != null">, user_comp</if>
+				<if test="userCompEnterdate != null">, user_comp_enterdate</if>
+				<if test="userDept != null">, user_dept</if>
+				<if test="userSpot != null">, user_spot</if>
+				<if test="userArmyServPeriod != null">, user_army_serv_period</if>
+				<if test="userMaritalStatus != null">, user_marital_status</if>
+				<if test="userArmyServEnter != null">, user_army_serv_enter</if>
+				<if test="userArmyServLeave != null">, user_army_serv_leave</if>
+				<if test="userArmyServ != null">, user_army_serv</if>
+				<if test="userTelnumWired != null">, user_telnum_wired</if>
+				<if test="userTelnumWireless != null">, user_telnum_wireless</if>
+				<if test="userEmail != null">, user_email</if>
+				<if test="userZipcode != null">, user_zipcode</if>
+				<if test="userAddress != null">, user_address</if>
+			)
+		VALUES (
+				#{userIdx}
+				<!-- user name 필수입력사항 -->
+				,#{userName[0]}
+				<if test="userSocialSecunum != null">, #{userSocialSecunum}</if>
+				<if test="userSex != null">, #{userSex[0]}</if>
+				<if test="userComp != null">, #{userComp[0]}</if>
+				<if test="userCompEnterdate != null">, #{userCompEnterdate[0]}</if>
+				<if test="userDept != null">, #{userDept[0]}</if>
+				<if test="userSpot != null">, #{userSpot[0]}</if>
+				<if test="userArmyServPeriod != null">, #{userArmyServPeriod[0]}</if>
+				<if test="userMaritalStatus != null">, #{userMaritalStatus[0]}</if>
+				<if test="userArmyServEnter != null">, #{userArmyServEnter[0]}</if>
+				<if test="userArmyServLeave != null">, #{userArmyServLeave[0]}</if>
+				<if test="userArmyServ != null">, #{userArmyServ[0]}</if>
+				<if test="userTelnumWired != null">, #{userTelnumWired[0]}</if>
+				<if test="userTelnumWireless != null">, #{userTelnumWireless[0]}</if>
+				<if test="userEmail != null">, #{userEmail[0]}</if>
+				<if test="userZipcode != null">, #{userZipcode[0]}</if>
+				<if test="userAddress != null">, #{userAddress[0]}</if>
+			)
+			
+	</insert>
+	
+	<!-- 중복검사 -->
+	<select id="findDuplitedUserInfo" parameterType="hashmap" resultType="hashmap">
+		SELECT user_idx
+		FROM user_info
+		WHERE user_name = #{userName[0]}
+			AND user_social_secunum = #{userSocialSecunum}
+	</select>
+	
+	<!-- 개인이력카드등록 -->
+	<update id="registerUserUpdate" parameterType="object">
+		UPDATE user_info
+		SET user_name = <choose><when test="userName != null">#{userName[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_social_secunum = <choose><when test="userSocialSecunum != null">#{userSocialSecunum}</when><otherwise>NULL</otherwise></choose>
+			, user_sex = <choose><when test="userSex != null">#{userSex[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_comp = <choose><when test="userComp != null">#{userComp[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_comp_enterdate = <choose><when test="userCompEnterdate != null">#{userCompEnterdate[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_dept = <choose><when test="userDept != null">#{userDept[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_spot = <choose><when test="userSpot != null">#{userSpot[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_army_serv_period = <choose><when test="userArmyServPeriod != null">#{userArmyServPeriod[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_marital_status = <choose><when test="userMaritalStatus != null">#{userMaritalStatus[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_army_serv_enter = <choose><when test="userArmyServEnter != null">#{userArmyServEnter[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_army_serv_leave = <choose><when test="userArmyServLeave != null">#{userArmyServLeave[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_army_serv = <choose><when test="userArmyServ != null">#{userArmyServ[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_telnum_wired = <choose><when test="userTelnumWired != null">#{userTelnumWired[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_telnum_wireless = <choose><when test="userTelnumWireless != null">#{userTelnumWireless[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_email = <choose><when test="userEmail != null">#{userEmail[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_zipcode = <choose><when test="userZipcode != null">#{userZipcode[0]}</when><otherwise>NULL</otherwise></choose>
+			, user_address = <choose><when test="userAddress != null">#{userAddress[0]}</when><otherwise>NULL</otherwise></choose>
+		WHERE user_idx = #{userIdx[0]}
+	</update>
+	
+	<!-- 유동데이터 조회 -->
+	<insert id="insertUserFlexibleData" parameterType="hashmap">
+		INSERT INTO user_info_${tbName}
+			(
+				<!-- user idx 필수입력사항 상위 테이블의 키값을 받음 -->
+				user_idx
+				<if test="eduSchoolName != null">, edu_school_name</if>
+				<if test="eduStatus != null">, edu_status</if>
+				<if test="eduYear != null">, edu_year</if>
+				<if test="eduMonth != null">, edu_month</if>
+				<if test="qualifiName != null">, qualifi_name</if>
+				<if test="qualifiGetdate != null">, qualifi_getdate</if>
+				<if test="careerCompName != null">, career_comp_name</if>
+				<if test="careerEnterdate != null">, career_enterdate</if>
+				<if test="careerLeavedate != null">, career_leavedate</if>
+				<if test="careerSpot != null">, career_spot</if>
+				<if test="careerResponsib != null">, career_responsib</if>
+				<if test="trainingName != null">, training_name</if>
+				<if test="trainingStratdate != null">, training_startdate</if>
+				<if test="trainingEnddate != null">, training_enddate</if>
+				<if test="trainingAgency != null">, training_agency</if>
+				<if test="licenName != null">, licen_name</if>
+				<if test="licenSkillLevel != null">, licen_skill_level</if>
+				<if test="skillProjectName != null">, skill_project_name</if>
+				<if test="skillStartdate != null">, skill_startdate</if>
+				<if test="skillEnddate != null">, skill_enddate</if>
+				<if test="skillCustomerComp != null">, skill_customer_comp</if>
+				<if test="skillWorkComp != null">, skill_work_comp</if>
+				<if test="skillIndustry != null">, skill_industry</if>
+				<if test="skillApplied != null">, skill_applied</if>
+				<if test="skillRole != null">, skill_role</if>
+				<if test="skillModel != null">, skill_model</if>
+				<if test="skillOS != null">, skill_os</if>
+				<if test="skillLang != null">, skill_lang</if>
+				<if test="skillDBMS != null">, skill_dbms</if>
+				<if test="skillTool != null">, skill_tool</if>
+				<if test="skillComm != null">, skill_comm</if>
+				<if test="skillETC != null">, skill_etc</if>
+				<if test="hobbyName != null">, HOBBY_NAME</if>
+				<if test="hobbyContinuedate != null">, HOBBY_CONTINUEDATE</if>
+				<if test="hobbyWeektime != null">, HOBBY_WEEKTIME</if>
+				)
+			VALUES 
+				(
+				<!-- user name 필수입력사항 -->
+				#{userIdx}
+				<if test="eduSchoolName != null">, #{eduSchoolName}</if>
+				<if test="eduStatus != null">, #{eduStatus}</if>
+				<if test="eduYear != null">, #{eduYear}</if>
+				<if test="eduMonth != null">, #{eduMonth}</if>
+				<if test="qualifiName != null">, #{qualifiName}</if>
+				<if test="qualifiGetdate != null">, #{qualifiGetdate}</if>
+				<if test="careerCompName != null">, #{careerCompName}</if>
+				<if test="careerEnterdate != null">, #{careerEnterdate}</if>
+				<if test="careerLeavedate != null">, #{careerLeavedate}</if>
+				<if test="careerSpot != null">, #{careerSpot}</if>
+				<if test="careerResponsib != null">, #{careerResponsib}</if>
+				<if test="trainingName != null">, #{trainingName}</if>
+				<if test="trainingStratdate != null">, #{trainingStratdate}</if>
+				<if test="trainingEnddate != null">, #{trainingEnddate}</if>
+				<if test="trainingAgency != null">, #{trainingAgency}</if>
+				<if test="licenName != null">, #{licenName}</if>
+				<if test="licenSkillLevel != null">, #{licenSkillLevel}</if>
+				<if test="skillProjectName != null">, #{skillProjectName}</if>
+				<if test="skillStartdate != null">, #{skillStartdate}</if>
+				<if test="skillEnddate != null">, #{skillEnddate}</if>
+				<if test="skillCustomerComp != null">, #{skillCustomerComp}</if>
+				<if test="skillWorkComp != null">, #{skillWorkComp}</if>
+				<if test="skillIndustry != null">, #{skillIndustry}</if>
+				<if test="skillApplied != null">, #{skillApplied}</if>
+				<if test="skillRole != null">, #{skillRole}</if>
+				<if test="skillModel != null">, #{skillModel}</if>
+				<if test="skillOS != null">, #{skillOS}</if>
+				<if test="skillLang != null">, #{skillLang}</if>
+				<if test="skillDBMS != null">, #{skillDBMS}</if>
+				<if test="skillTool != null">, #{skillTool}</if>
+				<if test="skillComm != null">, #{skillComm}</if>
+				<if test="skillETC != null">, #{skillETC}</if>
+				<if test="hobbyName != null">, #{hobbyName}</if>
+				<if test="hobbyContinuedate != null">, #{hobbyContinuedate}</if>
+				<if test="hobbyWeektime != null">, #{hobbyWeektime}</if>
+			)
+	</insert>
+	
+	<delete id="deleteCareerData" parameterType="hashmap">
+		DELETE FROM user_info_career
+		WHERE user_idx = #{userIdx}
+	</delete>
+	
+	<delete id="deleteEduData" parameterType="hashmap">
+		DELETE FROM user_info_edu
+		WHERE user_idx = #{userIdx}
+	</delete>
+	
+	<delete id="deleteLicenData" parameterType="hashmap">
+		DELETE FROM user_info_licen
+		WHERE user_idx = #{userIdx}
+	</delete>
+	
+	<delete id="deleteQualifiData" parameterType="hashmap">
+		DELETE FROM user_info_qualifi
+		WHERE user_idx = #{userIdx}
+	</delete>
+	
+	<delete id="deleteSkillData" parameterType="hashmap">
+		DELETE FROM user_info_skill
+		WHERE user_idx = #{userIdx}
+	</delete>
+	
+	<delete id="deleteTrainingData" parameterType="hashmap">
+		DELETE FROM user_info_training
+		WHERE user_idx = #{userIdx}
+	</delete>
+	
+	<delete id="deleteHobbyData" parameterType="hashmap">
+		DELETE FROM user_info_hobby
+		WHERE user_idx = #{userIdx}
+	</delete>
+	
+	<!-- 주민등록번호를 제외한 유저정보 조회 (불러오기 시 실행) -->
+	<select id="getRegisterData" resultType="hashmap">	
+		SELECT user_idx as userIdx
+			, user_register_date
+			, user_name as userName
+			, user_sex
+			, user_comp
+			, to_char(user_comp_enterdate,'yyyy-mm-dd') as user_comp_enterdate
+			, user_dept
+			, user_spot
+			, user_army_serv
+			, user_marital_status
+			, to_char(user_army_serv_enter, 'yyyy-mm-dd') as user_army_serv_enter
+			, to_char(user_army_serv_leave, 'yyyy-mm-dd') as user_army_serv_leave
+			, user_army_serv_period
+			, user_telnum_wired
+			, user_telnum_wireless
+			, user_email
+			, user_zipcode
+			, user_address
+		FROM user_info
+		WHERE
+			user_idx = #{userIdx}
+	</select>
+	
+	<select id="getUserIdxHasKeyword" resultType="string" parameterType="hashmap">
+		SELECT IFNULL(GROUP_CONCAT(a.user_idx),'0')
+		FROM(
+			SELECT user_idx
+			FROM user_info_skill
+			WHERE UPPER(skill_industry) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_applied) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_role) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_model) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_os) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_lang) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_dbms) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_tool) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_comm) REGEXP UPPER(#{keywords[0]})
+				OR UPPER(skill_etc) REGEXP UPPER(#{keywords[0]})
+			GROUP BY user_idx
+		)AS a
+	</select>
+	
+	<insert id="imgInsert" useGeneratedKeys="true" keyProperty="imgIdx">
+		<selectKey keyProperty="imgIdx" resultType="Integer" order="BEFORE">
+			select img_seq.nextval as imgIdx from dual
+		</selectKey>
+		INSERT INTO 
+		image
+		(
+			img_idx
+			,user_idx
+			,img_name
+		)
+		VALUES
+		(
+			#{imgIdx}
+			,#{userIdx}
+			,#{imgName}
+		)
+	</insert>
+	
+	<update id="imgUpdate">
+		UPDATE 
+			IMAGE
+		SET
+			IMG_NAME = #{imgName}
+		WHERE
+			USER_IDX = #{userIdx}	
+	</update>
+	
+	<select id="getUserImg" resultType="img">
+		select
+			img_name as imgName
+		from 
+			image
+		where 
+			user_idx=#{userIdx}
+	</select>
+	
+	<select id="getUserCountByCareerDate" resultType="hashmap">
+		SELECT 
+			count(s.career_date)as count
+			,s.career_date
+		FROM
+			(SELECT 
+				user_idx
+				,nvl(round(abs(sum((trunc(career_enterdate) - trunc(career_leavedate))/365))),0)as career_date
+			FROM 
+				user_info_career
+			GROUP BY 
+				'cd'
+				,user_idx) s
+		GROUP BY 
+			'career_date'
+			,s.career_date
+		ORDER BY
+			career_date	desc
+	</select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="licenDao">
+	
+	<resultMap type="licen" id="licen">
+		<result column="LICEN_IDX" property="licenIdx"/>
+		<result column="USER_IDX" property="UserIdx"/>
+		<result column="LICEN_NAME" property="licenName"/>
+		<result column="LICEN_SKILL_LEVEL" property="licenSkillLevel"/>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="licenIdx" parameterType="hashmap">
+		<selectKey keyProperty="licenIdx" resultType="Integer" order="BEFORE">
+			select user_info_licen_seq.nextval from dual
+		</selectKey>
+		insert into user_info_${tbName}
+		values
+		(
+		#{licenIdx}
+		,#{userIdx}
+		,#{licenName}
+		,#{licenSkillLevel}
+		)
+	</insert>
+
+	<select id="list" resultType="licen">
+		SELECT
+			LICEN_NAME as licenName
+			,LICEN_SKILL_LEVEL as licenSkillLevel
+		FROM
+			user_info_licen
+		WHERE
+			user_idx=#{intUserIdx}
+	</select>
+	
+	<update id="updateUserLicen">
+		UPDATE
+		USER_INFO_LICEN
+		SET
+			LICEN_NAME			= #{licenName}        
+			,LICEN_SKILL_LEVEL   = #{licenSkillLevel}
+		WHERE 
+			USER_IDX=#{userIdx}
+	</update>
+	
+</mapper>

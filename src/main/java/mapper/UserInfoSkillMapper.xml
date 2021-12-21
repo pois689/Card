@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="skillDao">
+	
+	<resultMap type="skill" id="skill">
+		<result column="SKILL_IDX" property="skillIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="SKILL_PROJECT_NAME" property="skillProjectName"/>
+		<result column="SKILL_STARTDATE" property="skillStartdate"/>
+		<result column="SKILL_ENDDATE" property="skillEnddate"/>
+		<result column="SKILL_CUSTOMER_COMP" property="skillCustomerComp"/>
+		<result column="SKILL_WORK_COMP" property="skillWorkComp"/>
+		<result column="SKILL_APPLIED" property="skillApplied"/>
+		<result column="SKILL_INDUSTRY" property="skillIndustry"/>
+		<result column="SKILL_ROLE" property="skillRole"/>
+		<result column="SKILL_MODEL" property="skillModel"/>
+		<result column="SKILL_OS" property="skillOs"/>
+		<result column="SKILL_LANG" property="skillLang"/>
+		<result column="SKILL_DBMS" property="skillDbms"/>
+		<result column="SKILL_COMM" property="skillComm"/>
+		<result column="SKILL_TOOL" property="skillTool"/>
+		<result column="SKILL_ETC" property="skillEtc"/>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="skillIdx" parameterType="hashmap">
+		<selectKey keyProperty="skillIdx" resultType="Integer" order="BEFORE">
+			select user_info_skill_seq.nextval from dual
+		</selectKey>
+		insert into 
+		user_info_${tbName}
+		values(
+		#{skillIdx}
+		,#{userIdx}
+		,#{skillProjectName}
+		,#{skillStartdate}
+		,#{skillEnddate}
+		,#{skillCustomerComp}
+		,#{skillWorkComp}
+		,#{skillApplied}
+		,#{skillIndustry}
+		,#{skillRole}
+		,upper(#{skillModel})
+		,upper(#{skillOs}   )
+		,upper(#{skillLang} )
+		,upper(#{skillDbms} )
+		,upper(#{skillComm} )
+		,upper(#{skillTool} )
+		,upper(#{skillEtc}  )
+		)	
+	</insert>
+	
+	<select id="list" resultType="skill">
+		SELECT    
+			SKILL_PROJECT_NAME as skillProjectName  
+			,to_char(SKILL_STARTDATE, 'yyyy-mm-dd') as skillStartdate     
+			,to_char(SKILL_ENDDATE, 'yyyy-mm-dd') as skillEnddate       
+			,SKILL_CUSTOMER_COMP as skillCustomerComp 
+			,SKILL_WORK_COMP as skillWorkComp     
+			,SKILL_APPLIED as skillApplied       
+			,SKILL_INDUSTRY as skillIndustry      
+			,SKILL_ROLE as skillRole           
+			,SKILL_MODEL as skillModel         
+			,SKILL_OS as skillOs            
+			,SKILL_LANG as skillLang          
+			,SKILL_DBMS as skillDbms          
+			,SKILL_COMM as skillComm          
+			,SKILL_TOOL as skillTool          
+			,SKILL_ETC as skillEtc        
+		FROM
+			user_info_skill
+		WHERE
+			user_idx=#{intUserIdx}
+	</select>
+	
+	<update id="updateUserSkill">
+		UPDATE
+		USER_INFO_SKILL
+		SET
+			SKILL_PROJECT_NAME    =  #{skillProjectName} 
+			,SKILL_STARTDATE      =  #{skillStartdate}   
+			,SKILL_ENDDATE        =  #{skillEnddate}     
+			,SKILL_CUSTOMER_COMP  =  #{skillCustomerComp}
+			,SKILL_WORK_COMP      =  #{skillWorkComp}    
+			,SKILL_APPLIED        =  #{skillApplied}     
+			,SKILL_INDUSTRY       =  #{skillIndustry}    
+			,SKILL_ROLE           =  #{skillRole}        
+			,SKILL_MODEL          =  #{skillModel}       
+			,SKILL_OS             =  #{skillOs}          
+			,SKILL_LANG           =  #{skillLang}        
+			,SKILL_DBMS           =  #{skillDbms}        
+			,SKILL_COMM           =  #{skillComm}        
+			,SKILL_TOOL           =  #{skillTool}        
+			,SKILL_ETC            =  #{skillEtc}         
+		WHERE 
+			USER_IDX=#{userIdx}
+	</update>
+	
+</mapper>

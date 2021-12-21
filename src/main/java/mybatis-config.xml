@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- null 입력 전면 허용 -->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="topia.spring.card.vo.UserInfo" alias="info"/>
+		<typeAlias type="topia.spring.card.vo.UserInfoCareer" alias="career"/>
+		<typeAlias type="topia.spring.card.vo.UserInfoEdu" alias="edu"/>
+		<typeAlias type="topia.spring.card.vo.UserInfoLicen" alias="licen"/>
+		<typeAlias type="topia.spring.card.vo.UserInfoQualifi" alias="qualifi"/>
+		<typeAlias type="topia.spring.card.vo.UserInfoSkill" alias="skill"/>
+		<typeAlias type="topia.spring.card.vo.UserInfoTraining" alias="training"/>
+		<typeAlias type="topia.spring.card.vo.Image" alias="img"/>
+		<typeAlias type="topia.spring.card.vo.UserInfoHobby" alias="hobby"/>
+	</typeAliases>
+	
+</configuration>

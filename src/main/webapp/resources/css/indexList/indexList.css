@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+a {
+	text-decoration: none;
+}
+
+.user_list_pannel {
+	margin: 30px auto;
+    background-color: #ebf2f1;
+    padding: 20px;
+    max-width: 1080px;
+}
+
+.user_list_search_pannel {
+	margin: 15px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.search_cnt_pannel {
+	padding-left: 5%;
+}
+
+.down_search_btn {
+	display: flex;
+	justify-content: center;
+}
+
+#getUserCountByCareerDate {
+	margin-right: 25px;
+    margin-left: 25px;
+}
+
+.user_register_list_pannel {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.user_register_list_table {
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+
+.user_register_list_table thead td {
+	background-color: #ebf2f1;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.user_register_list_table tbody td {
+	font-size: 17px;
+	text-align: center;
+}
+
+.user_paging_pannel {
+	text-align: center;
+}
+
+.keyword_add_tooltip {
+	height: 18px;
+    width: 18px;
+    background: white;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.keywordAddBtn {
+	color: #7b7b7b;
+    text-align: center;
+    line-height: 18px;
+    font-size: 15px;
+    font-family: fantasy;
+}
+
+.tooltiptext {
+	visibility: hidden;
+    width: 120px;
+    background-color: #777777;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    position: absolute;
+    z-index: 1;
+}
+
+.keyword_InputPannel {
+	display: none;
+}
+
+.keyword_InputPannel input {
+	width: 86px;
+    height: 18px;
+    font-size: 12px;
+    padding: 0 4px 0 4px;
+    border-radius: 10px;
+    border: solid 1px #cccccc;
+}
+
+.user_list_search_pannel * {
+	margin-right: 5px;
+}
+
+.keyword-body {
+	padding: 0px 15px 0 15px;
+    background-color: #5a89ab;
+    display: inline-block;
+    margin: 0 5px 5px 0;
+    border-radius: 9px;
+}
+
+.keyword-body button {
+    position: absolute;
+    height: 16px;
+    color: #ad0000;
+    font-size: 14px;
+    font-weight: 900;
+    border: none;
+    border-radius: inherit;
+    margin: 0px 0px 0 -28px;
+    background-color: rgba( 255, 255, 255, 0.0 );
+    cursor: pointer;
+}
+
+.keyword-body button span {
+    position: absolute;
+    margin: -10px 0px 0px 7px;
+}
+
+.keyword-remove-btn {
+    visibility: hidden;
+}
+
+.keyword-body:hover .keyword-remove-btn{
+	visibility: visible;
+}

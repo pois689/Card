@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hobbyDao">
+
+	<resultMap type="hobby" id="hobby">
+		<result column="HOBBY_IDX" property="hobbyIdx"/>
+		<result column="USER_IDX" property="userIdx"/>
+		<result column="HOBBY_NAME" property="hobbyName"/>
+		<result column="HOBBY_CONTINUEDATE" property="hobbyContinuedate"/>
+		<result column="HOBBY_WEEKTIME" property="hobbyWeektime"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="hashmap">
+		insert into 
+			user_info_${tbName}
+		(
+			HOBBY_IDX
+			,USER_IDX
+			,HOBBY_NAME
+			,HOBBY_CONTINUEDATE
+			,HOBBY_WEEKTIME
+		)	
+		values
+		(
+			user_info_hobby_seq.nextval
+			,#{userIdx}
+			,#{hobbyName}
+			,#{hobbyContinuedate}
+			,#{hobbyWeektime}
+		)	
+	</insert>
+	
+	<select id="list" resultType="hobby">
+		SELECT
+			HOBBY_NAME as hobbyName
+			, HOBBY_CONTINUEDATE as hobbyContinuedate
+			, HOBBY_WEEKTIME as hobbyWeektime
+		FROM
+			user_info_hobby
+		WHERE
+			user_idx=#{userIdx}
+	</select>
+	
+	
+	<update id="updateUserHobby">
+		UPDATE
+		USER_INFO_HOBBY
+		SET
+			HOBBY_NAME 		 = #{hobbyName}     
+			,HOBBY_CONTINUEDATE  = #{hobbyContinuedate}
+			,HOBBY_WEEKTIME 	 = #{hobbyWeektime}  
+		WHERE 						
+			USER_IDX=#{userIdx}
+	</update>
+</mapper>
