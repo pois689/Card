@@ -33,6 +33,7 @@ var paging = function(totalCnt, dataSize, pageSize, pageNo, token){
 	if(totalCnt == 0){ return ""; } // 페이지 카운트
 	
 	var pageCnt = totalCnt % dataSize;
+	
 	if(pageCnt == 0){
 		pageCnt = parseInt(totalCnt / dataSize);
 	}else{
@@ -44,12 +45,14 @@ var paging = function(totalCnt, dataSize, pageSize, pageNo, token){
 	if(pageNo % pageSize == 0){
 		pRCnt = parseInt(pageNo / pageSize) - 1;
 	} // 이전
-																																																																	// 화살표
+	
 	if(pageNo > pageSize){
 		var s2;
+		
 		if(pageNo % pageSize == 0){
 			s2 = pageNo - pageSize;
 		}else{
+			
 			s2 = pageNo - pageNo % pageSize;
 		}
 		
@@ -61,17 +64,28 @@ var paging = function(totalCnt, dataSize, pageSize, pageNo, token){
 		
 		}else{
 			
-			html.push('<a href="#">\n');
-			html.push('◀'); html.push('</a>');
+			if(pageNo -1 != 0) {
+				html.push('<a href=javascript:' + token + '("');
+				html.push(pageNo - 1);
+				html.push('");>');
+				html.push('◀');
+				html.push('</a>');
+			} else {
+				html.push('<a href="#">\n');
+				html.push('◀'); html.push('</a>');
+			}
 		} // paging
 																																																																																		// Bar
 	for(var index=pRCnt * pageSize + 1; index<(pRCnt + 1)*pageSize + 1;index++){
 		if(index == pageNo){
+			console.log("index : " + index);
 			html.push('<strong>');
 			html.push(index); html.push('</strong>');
 		}else{
 			html.push('<a href=javascript:' + token + '("');
-			html.push(index); html.push('");>'); html.push(index);
+			html.push(index);
+			html.push('");>');
+			html.push(index);
 			html.push('</a>');
 		}if(index == pageCnt){
 			break;
@@ -83,9 +97,19 @@ var paging = function(totalCnt, dataSize, pageSize, pageNo, token){
 		html.push((pRCnt + 1)*pageSize+1); html.push('");>');
 		html.push('▶'); html.push('</a>');
 	}else{
-		html.push('<a href="#">');
-		html.push('▶');
-		html.push('</a>');
+		
+		if(pageNo + 1 > pageCnt) {
+			html.push('<a href=');
+			html.push('#>');
+			html.push('▶');
+			html.push('</a>');
+		} else {
+			html.push('<a href=javascript:' + token + '("');
+			html.push(pageNo + 1);
+			html.push('");>');
+			html.push('▶');
+			html.push('</a>');
+		}
 	} 
 	
 	return html.join("");

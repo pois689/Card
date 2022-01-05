@@ -534,7 +534,7 @@ var getRegisterData = function(userIdx){
 			var target = convertData[key];
 			$("#"+target).val(val);
 			
-			console.log("userEmail : " + getData.fixedData[0].USER_EMAIL);
+			/*console.log("fixedData : " + fixedData[key]);*/
 			
 			// 이메일 input 박스에 넣기
 			var fullEmail = getData.fixedData[0].USER_EMAIL;
@@ -557,7 +557,6 @@ var getRegisterData = function(userIdx){
 		var $tbodyFirstTr = $loopTbody.find("tr:first-child");
 		var trText = $tbodyFirstTr.html();
 		
-		
 		//var nowFlexibleData = eval("getData." + tbName); badcoding
 		var nowFlexibleData = getData[tbName];
 		var nowFlexibleDataLen = nowFlexibleData.length; 
@@ -574,7 +573,7 @@ var getRegisterData = function(userIdx){
 			for (var key in nowData) {
 				//var val = eval("(nowData." + key + ")"); badcoding
 				var val = nowData[key];
-				
+				console.log("key : "+ key);
 				var $inputObj = $loopTbody.find("tr").eq(i).find("."+key);
 	
 				var tagName = $inputObj.prop('tagName');
@@ -604,9 +603,46 @@ var getRegisterData = function(userIdx){
 	$("textarea").each(function(){resize($(this));}) // 새로 불러온 정보 textarea 리사이징
 	$("select").find("option:selected").prop('selected',true);
 	
-};
+	tableRewrite(); // 취미 테이블 내용 없을 경우 input 칸 사라지는 현상 방지
+}
 
-
+/*
+ * 테이블 안에 내용이 없는 경우 칸 재할당
+ * */
+function tableRewrite() {
+	console.log("tableRewrite 실행");
+	var hobbyTable = $(".hobby-info").find("tbody").find("td").length;
+	var hobbyTableWrite = "";
+	
+	if(hobbyTable === 0) {
+		hobbyTableWrite += "<tr>";
+		hobbyTableWrite += "<td><input type='text' data='hobbyName' class='hobbyName' autocomplete='off'></td>";
+		hobbyTableWrite += "<td>";
+		hobbyTableWrite += "<select data='hobbyContinuedate' class='hobbyContinuedate'>";
+		hobbyTableWrite += "<option value=''>선택없음</option>";
+		hobbyTableWrite += "<option value='1년'>1년</option>";
+		hobbyTableWrite += "<option value='2년'>2년</option>";
+		hobbyTableWrite += "<option value='3년'>3년</option>";
+		hobbyTableWrite += "<option value='4년'>4년</option>";
+		hobbyTableWrite += "<option value='5년이상'>5년이상</option>";
+		hobbyTableWrite += "</select>";
+		hobbyTableWrite += "<td>";
+		hobbyTableWrite += "<select data='hobbyWeektime' class='hobbyWeektime'>";
+		hobbyTableWrite += "<option value=''>선택없음</option>";
+		hobbyTableWrite += "<option value='1시간'>1시간</option>";
+		hobbyTableWrite += "<option value='2시간'>2시간</option>";
+		hobbyTableWrite += "<option value='3시간'>3시간</option>";
+		hobbyTableWrite += "<option value='4시간'>4시간</option>";
+		hobbyTableWrite += "<<option value='5시간'>5시간</option>";
+		hobbyTableWrite += "</select>";
+		
+		hobbyTableWrite += "</td>";
+		hobbyTableWrite += "</tr>";
+		
+		
+		$(".hobby-info").find("tbody").html(hobbyTableWrite);
+	}
+}
 
 /**
  * 데이터 매칭
@@ -815,9 +851,6 @@ var regexAndEmptyCheck = function() {
 		}
 	}
 
-	
-	
-	
 	return true;
 };
 
@@ -888,3 +921,4 @@ function checkExtension(fileName,fileSize){
 	}
 	return true;
 }
+
